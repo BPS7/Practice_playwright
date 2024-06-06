@@ -1,0 +1,21 @@
+{
+  "name": "pom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "pageobjectlogin-chrome":"npx playwright test test.spec.ts --project chromium --headed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.44.1",
+    "@types/node": "^20.13.0",
+    "dotenv": "^16.4.5"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "allure-playwright": "^3.0.0-beta.1"
+  }
+}
