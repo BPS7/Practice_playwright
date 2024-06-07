@@ -8,7 +8,7 @@ on:
         required: true
         default: 'https://www.saucedemo.com/'
 
-        inputs:
+        test_type:
         description: "Select test type (where '@regression' - is default)"
         required: true
         default: "@regression"
@@ -35,6 +35,7 @@ jobs:
 
       - name: Set environment variable
         run: echo "ENVIRONMENT_URL=${{ github.event.inputs.environment_url }}" >> $GITHUB_ENV
+             echo "TEST_TYPE=${{ github.event.inputs.test_type }}" >> $GITHUB_ENV
 
       - name: Run Playwright tests
         run: npx playwright test
