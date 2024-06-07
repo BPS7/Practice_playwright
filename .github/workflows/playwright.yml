@@ -8,6 +8,8 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ matrix.environment == 'integration' && 'https://www.saucedemo.com/' || matrix.environment == 'staging' && 'https://www.saucedemo.com/' || matrix.environment == 'prod' && 'https://www.saucedemo.com/' }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -19,6 +21,8 @@ jobs:
       run: npx playwright install --with-deps --force
     - name: Run Playwright tests
       run: npx playwright test
+      env:
+          BASE_URL: ${{ env.BASE_URL }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
