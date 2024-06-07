@@ -37,10 +37,10 @@ test.describe('Browser Tests', () => {
 
 
 
-  test.describe('Sauce Demo',()=> {
+  test.describe('Sauce Demo ' ,()=> {
     //override the default retires in config file
     //test.describe.configure({retries:1})
-  test('User login', async ({page})=> {
+  test('User login @regression @smoke', async ({page})=> {
     const pm = new PageManager(page);
             await pm.items().item();
             await pm.items().totalNumberOfItems();
@@ -49,7 +49,7 @@ test.describe('Browser Tests', () => {
             await pm.sumarry().clickOnCheckout();
   });
 
-  test('sorting',async({page})=>{
+  test('sorting @regression @smoke',async({page})=>{
     const pm = new PageManager(page);
     await pm.items().clickOnSort();
     await pm.items().getHighestPrice();
@@ -57,7 +57,7 @@ test.describe('Browser Tests', () => {
 
   })
 
-  test.describe('Different user login behavor',()=>{
+  test.describe('Different user login behavor @regression',()=>{
     test('invalid credentials',async({page})=>{
       const pm = new PageManager(page);
       await page.goto(testData.url.baseUrl);
@@ -69,7 +69,7 @@ test.describe('Browser Tests', () => {
 
     })
 
-    test('locked_out_user',async({page})=>{
+    test('locked_out_user @regression',async({page})=>{
       const pm = new PageManager(page);
       await page.goto(testData.url.baseUrl);
         await pm.homepage().enterUsername(testData.locked_out_user.userName);
@@ -78,7 +78,7 @@ test.describe('Browser Tests', () => {
         await pm.homepage().errorMessagepopUp();
     });
 
-    test('problem_user',async({page})=>{
+    test('problem_user @regression',async({page})=>{
       const pm = new PageManager(page);
       await page.goto(testData.url.baseUrl);
         await pm.homepage().enterUsername(testData.problem_user.userName);
@@ -87,7 +87,7 @@ test.describe('Browser Tests', () => {
         await pm.items().logIfAllImagesAreSame();
     })
 
-    test('error_user',async({page})=>{
+    test('error_user @regression',async({page})=>{
       const pm = new PageManager(page);
       await page.goto(testData.url.baseUrl);
         await pm.homepage().enterUsername(testData.error_user.userName);
