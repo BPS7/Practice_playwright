@@ -11,7 +11,6 @@ on:
         test_type:
         description: "Select test type (where '@regression' - is default)"
         required: true
-        type: choice
         default: "@regression"
         options:
           - "@smoke"
