@@ -45,7 +45,7 @@ export default defineConfig({
       name: 'chromium',
       use: {
         browserName: 'chromium', // Set the default browser to Chromium
-        headless: false,         // Run in headed mode
+        headless: true,         // Run in headed mode
       },
     }
     /* Test against mobile viewports. */
