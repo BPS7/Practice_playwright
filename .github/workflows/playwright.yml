@@ -6,7 +6,7 @@ on:
       environment_url:
         description: 'URL of the environment to run tests in'
         required: true
-        default: 'https://staging.example.com'
+        default: 'https://www.saucedemo.com/'
 
 jobs:
   build:
