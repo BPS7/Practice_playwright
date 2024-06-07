@@ -3,22 +3,10 @@ name: Manual Trigger Workflow
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment to run tests in'
+      environment_url:
+        description: 'URL of the environment to run tests in'
         required: true
-        default: 'staging'
-      scope:
-        description: 'Test scope'
-        required: false
-        default: '@tiger-regression'
-      send_to_testrail:
-        description: 'Send results to TestRail'
-        required: false
-        default: 'false'
-      testrun_title:
-        description: 'Title for the Test Run'
-        required: false
-        default: 'manual_run'
+        default: 'https://staging.example.com'
 
 jobs:
   build:
@@ -36,17 +24,13 @@ jobs:
         run: npm install
 
       - name: Install Playwright browsers
-        run: npx playwright install
+        run: npx playwright install 
 
-      - name: Set environment variables
-        run: |
-          echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
-          echo "SCOPE=${{ github.event.inputs.scope }}" >> $GITHUB_ENV
-          echo "TESTRAIL=${{ github.event.inputs.send_to_testrail }}" >> $GITHUB_ENV
-          echo "TITLE=${{ github.event.inputs.testrun_title }}" >> $GITHUB_ENV
+      - name: Set environment variable
+        run: echo "ENVIRONMENT_URL=${{ github.event.inputs.environment_url }}" >> $GITHUB_ENV
 
       - name: Run Playwright tests
         run: npx playwright test
         env:
-          BASE_URL: ${{ env.baseUrl }}
+          BASE_URL: ${{ env.ENVIRONMENT_URL }}
           
