@@ -7,15 +7,15 @@ on:
         description: 'URL of the environment to run tests in'
         required: true
         default: 'https://www.saucedemo.com/'
-        tf_scope:
-        description:"Select test type(where '@regression' - is default)"
+
+        test_type:
+        description: "Select test type (where '@regression' - is default)"
         required: true
         type: choice
         default: "@regression"
         options:
-        -"@smoke"
-        -"@regression"
-
+          - "@smoke"
+          - "@regression"
 jobs:
   build:
     runs-on: ubuntu-latest
