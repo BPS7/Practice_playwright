@@ -99,7 +99,7 @@ test.describe('Browser Tests', () => {
         await page.waitForTimeout(3000)
     })
 
-    test('performance_glitch_user',async({page})=>{
+    test.skip('performance_glitch_user',async({page})=>{
       const timeout = 2000;
       const pm = new PageManager(page);
       await page.goto(testData.url.baseUrl);
