@@ -1,62 +1,52 @@
-name: QA-Automation-TIGER-Regression
-   workflow_dispatch:
-     inputs:
-       tf_testrun:
-         description: "Set the name of Test Run (Don't use '-')"
-         required: true
-         type: string
-         default: "tiger_nightly"
-       tf_select_environment:
-         description: "Select environment"
-         required: true
-         type: choice
-         default: staging
-         options:
-           - "integration"
-           - "staging"
-           - "production"
-       tf_scope:
-         description: "Select test type (where '@tiger-regression' - is default)"
-         required: true
-         type: choice
-         default: "@tiger-regression"
-         options:
-           - "@tiger-regression"
-           - "@tiger-ui-ci"
-           - "@tiger-service-ci"
-           - "@cross-sell-monolith"
-           - "@cross-sell-msa"
-           - "@tiger-ui-ci-prod"
-           - "@tiger-ui-ho4-ach"
-       tf_send_to_testrail:
-         description: "Send results to TestRail?"
-         type: choice
-         default: "false"
-         options:
-           - "false"
-           - "true"
- 
- permissions: write-all
- 
- jobs:
-   build:
-     name: Tiger Nightly Tests on ${{ inputs.tf_select_environment || 'staging'}} environment
-     runs-on: ubuntu-latest
-     environment: ${{ inputs.tf_select_environment || 'staging'}}
-     steps:
-       - name: Setup Default inputs for scheduled run for Nigtly Run
-         if: github.event_name == 'schedule'
-         run: |
-           echo "SCOPE=@tiger-regression" >> $GITHUB_ENV 
-           echo "TESTRAIL=false" >> $GITHUB_ENV 
-           echo "TITLE=tiger_nightly" >> $GITHUB_ENV
-           echo "ENVIRONMENT_TO_RUN=staging" >> $GITHUB_ENV
- 
-       - name: Setup custom inputs for workflow dispatch
-         if: github.event_name == 'workflow_dispatch'
-         run: |
-           echo "SCOPE=${{ inputs.tf_scope }}" >> $GITHUB_ENV
-           echo "TESTRAIL=${{ inputs.tf_send_to_testrail }}" >> $GITHUB_ENV
-           echo "TITLE=${{ inputs.tf_testrun }}" >> $GITHUB_ENV
-           echo "ENVIRONMENT_TO_RUN=${{ inputs.tf_select_environment }}" >> $GITHUB_ENV
-        
+name: Manual Trigger Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests in'
+        required: true
+        default: 'staging'
+      scope:
+        description: 'Test scope'
+        required: false
+        default: '@tiger-regression'
+      send_to_testrail:
+        description: 'Send results to TestRail'
+        required: false
+        default: 'false'
+      testrun_title:
+        description: 'Title for the Test Run'
+        required: false
+        default: 'manual_run'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Set environment variables
+        run: |
+          echo "ENVIRONMENT=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          echo "SCOPE=${{ github.event.inputs.scope }}" >> $GITHUB_ENV
+          echo "TESTRAIL=${{ github.event.inputs.send_to_testrail }}" >> $GITHUB_ENV
+          echo "TITLE=${{ github.event.inputs.testrun_title }}" >> $GITHUB_ENV
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          BASE_URL: ${{ env.baseUrl }}
+          
