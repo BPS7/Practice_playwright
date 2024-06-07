@@ -7,6 +7,14 @@ on:
         description: 'URL of the environment to run tests in'
         required: true
         default: 'https://www.saucedemo.com/'
+
+        inputs:
+        description: "Select test type (where '@regression' - is default)"
+        required: true
+        default: "@regression"
+        options:
+          - "@smoke"
+          - "@regression"
 jobs:
   build:
     runs-on: ubuntu-latest
