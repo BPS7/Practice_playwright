@@ -35,7 +35,7 @@ jobs:
 
       - name: Set environment variable
         run: echo "ENVIRONMENT_URL=${{ github.event.inputs.environment_url }}" >> $GITHUB_ENV
-             echo "TEST_TYPE=${{ github.event.inputs.test_type }}" >> $GITHUB_ENV
+             echo "Scope=${{ inputs.test_type }}" >> $GITHUB_ENV
 
       - name: Run Playwright tests
         run: npx playwright test
