@@ -1,8 +1,4 @@
 name: QA-Automation-TIGER-Regression
- on:
-   schedule:
-     - cron: "00 08 * * 1-5" # At 04:00AM EST from Monday through Friday.
- 
    workflow_dispatch:
      inputs:
        tf_testrun:
